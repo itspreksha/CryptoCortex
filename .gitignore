@@ -1,0 +1,23 @@
+# ---- Python ----
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ---- Virtual Environments ----
+Backend/venv/
+Backend/env/
+Backend/.pytest_cache/
+# ---- Environment files ----
+Backend/.env
+
+# ---- Logs ----
+*.log
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
