@@ -21,10 +21,10 @@ The system now supports:
 - Credit updates and history tracking
 - Stable cloud deployment (AWS Free Tier)
 
-  2.How the Software Design Was Improved
+2.How the Software Design Was Improved
 
-  2.1 Decoupling API Requests from Trade Execution\*\*
-  Originally, the API endpoint executed trades synchronously. This caused:
+2.1 Decoupling API Requests from Trade Execution
+Originally, the API endpoint executed trades synchronously. This caused:
 
 - Long response times
 - Worker timeouts
@@ -59,7 +59,6 @@ portfolio = await Portfolio.find_one(...)
 portfolio.quantity += qty
 await portfolio.save()
 
-```
 This created race conditions and duplicate key errors.
 
 Improvement:
@@ -193,4 +192,3 @@ This file covers:
 - How principles like SRP, DRY, DIP were applied
 - Major refactoring that improved performance and reliability.
 
-```
