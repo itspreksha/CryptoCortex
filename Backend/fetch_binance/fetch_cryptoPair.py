@@ -1,4 +1,4 @@
-from binance.client import Client
+from binance_config import client as binance_client
 from decimal import Decimal
 from datetime import datetime, timezone
 from bson.decimal128 import Decimal128
@@ -14,7 +14,6 @@ def to_decimal128(val):
     return Decimal128(str(val))
 
 
-binance_client = Client()
 
 
 async def fetch_and_store_binance_symbols():
@@ -24,6 +23,15 @@ async def fetch_and_store_binance_symbols():
     event loop during startup.
     """
     # fetch exchange info in thread
+    # If Binance client isn't available, skip fetching symbols
+    try:
+        if not getattr(binance_client, "is_available", lambda: False)():
+            print("Binance client not available — skipping fetch_and_store_binance_symbols")
+            return
+    except Exception:
+        print("Error checking Binance client availability — skipping fetch_and_store_binance_symbols")
+        return
+
     exchange_info = await asyncio.to_thread(binance_client.get_exchange_info)
     symbols = exchange_info.get("symbols", [])
 
