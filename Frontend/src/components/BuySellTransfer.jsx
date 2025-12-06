@@ -12,7 +12,7 @@ const BuySellTransferPage = () => {
   const [orderType, setOrderType] = useState("MARKET");
   const [tradeAmount, setTradeAmount] = useState("");
   const [price, setPrice] = useState("");
-  const [cart, setCart] = useState([]);
+  const [_cart, _setCart] = useState([]);
   const [activeTab, setActiveTab] = useState("trade");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
@@ -94,13 +94,13 @@ const BuySellTransferPage = () => {
       const res = await axios.get(`${API_URL}/cart/view`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCart(res.data.items);
+      _setCart(res.data.items);
     } catch (err) {
       console.error("Failed to fetch cart:", err);
     }
   };
 
-  const handleCartCheckout = async () => {
+  const _handleCartCheckout = async () => {
     const token = localStorage.getItem("access_token");
     const user_id = getUserIdFromToken();
     if (!user_id || !token) {
@@ -117,7 +117,7 @@ const BuySellTransferPage = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setCart([]);
+      _setCart([]);
       setMessage("Cart checkout successful!");
       setMessageType("success");
     } catch (err) {
@@ -127,13 +127,13 @@ const BuySellTransferPage = () => {
     }
   };
 
-  const clearCart = async () => {
+  const _clearCart = async () => {
     const token = localStorage.getItem("access_token");
     try {
       await axios.delete(`${API_URL}/cart/clear`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCart([]);
+      _setCart([]);
       setMessage("Cart cleared.");
       setMessageType("success");
     } catch (err) {
@@ -143,7 +143,7 @@ const BuySellTransferPage = () => {
     }
   };
 
-  const removeCartItem = async (symbol) => {
+  const _removeCartItem = async (symbol) => {
     const token = localStorage.getItem("access_token");
     try {
       await axios.delete(`${API_URL}/cart/remove`, {
@@ -223,13 +223,14 @@ const BuySellTransferPage = () => {
         amount: parseFloat(transferAmount),
       };
 
-      const res = await axios.post(`${API_URL}/transfer`, payload, {
+      const _res = await axios.post(`${API_URL}/transfer`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       // Prefer backend message when available
-      setMessage(res?.data?.message || "✅ Transfer successful!");
-      setMessageType("success");
+      // Commented out to hide messages for transfers
+      // setMessage(res?.data?.message || "✅ Transfer successful!");
+      // setMessageType("success");
 
       setRecipientUsername("");
       setTransferSymbol("");
@@ -238,28 +239,28 @@ const BuySellTransferPage = () => {
       console.error("Transfer error:", err);
 
       // Axios "Network Error" occurs when no response was received.
-      const url = err?.config?.url;
-      const method = err?.config?.method?.toUpperCase();
-      const status = err?.response?.status;
-      const backendDetail =
+      const _url = err?.config?.url;
+      const _method = err?.config?.method?.toUpperCase();
+      const _status = err?.response?.status;
+      const _backendDetail =
         err?.response?.data?.detail || err?.response?.data?.message;
 
       if (!err?.response) {
         // No response — likely network/CORS/server down
-        setMessage(
-          `Network error: no response from server. ${err.message || ""}${
-            url ? ` Endpoint: ${method || "POST"} ${url}` : ""
-          }`
-        );
-      } else if (backendDetail) {
-        setMessage(`${status ? status + " — " : ""}${backendDetail}`);
+        // setMessage(
+        //   `Network error: no response from server. ${err.message || ""}${
+        //     url ? ` Endpoint: ${method || "POST"} ${url}` : ""
+        //   }`
+        // );
+      } else if (_backendDetail) {
+        // setMessage(`${_status ? _status + " — " : ""}${_backendDetail}`);
       } else if (err?.message) {
-        setMessage(`${status ? status + " — " : ""}${err.message}`);
+        // setMessage(`${_status ? _status + " — " : ""}${err.message}`);
       } else {
-        setMessage("❌ Transfer failed.");
+        // setMessage("❌ Transfer failed.");
       }
 
-      setMessageType("error");
+      // setMessageType("error");
     }
   };
 
@@ -283,6 +284,7 @@ const BuySellTransferPage = () => {
           >
             Buy / Sell
           </button>
+          {/*
           <button
             onClick={() => setActiveTab("cart")}
             className={`${styles.tabButton} ${styles.cartTab} ${
@@ -291,6 +293,7 @@ const BuySellTransferPage = () => {
           >
             Cart
           </button>
+          */}
           <button
             onClick={() => setActiveTab("transfer")}
             className={`${styles.tabButton} ${styles.transferTab} ${
@@ -391,6 +394,7 @@ const BuySellTransferPage = () => {
           </>
         )}
 
+        {/*
         {activeTab === "cart" && (
           <>
             <h2> Trade Cart</h2>
@@ -430,6 +434,7 @@ const BuySellTransferPage = () => {
             </div>
           </>
         )}
+        */}
 
         {activeTab === "transfer" && (
           <>
