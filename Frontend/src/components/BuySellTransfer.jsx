@@ -373,9 +373,6 @@ const BuySellTransferPage = () => {
             )}
 
             <div className={styles.actionRow}>
-              <button className={styles.actionButton} onClick={handleAddToCart}>
-                Add to Cart
-              </button>
               <button
                 className={styles.actionButton}
                 onClick={() => handleTrade("buy")}
