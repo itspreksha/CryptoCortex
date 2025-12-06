@@ -204,6 +204,12 @@ const BuySellTransferPage = () => {
   const handleTransfer = async () => {
     const token = localStorage.getItem("access_token");
 
+    if (!token) {
+      setMessage("User not authenticated.");
+      setMessageType("error");
+      return;
+    }
+
     if (!recipientUsername || !transferSymbol || !transferAmount) {
       setMessage("Please fill all fields.");
       setMessageType("error");
@@ -217,19 +223,32 @@ const BuySellTransferPage = () => {
         amount: parseFloat(transferAmount),
       };
 
-      await axios.post(`${API_URL}/transfer`, payload, {
+      const res = await axios.post(`${API_URL}/transfer`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setMessage("✅ Transfer successful!");
+      // Prefer backend message when available
+      setMessage(res?.data?.message || "✅ Transfer successful!");
       setMessageType("success");
 
       setRecipientUsername("");
       setTransferSymbol("");
       setTransferAmount("");
     } catch (err) {
-      console.error(err);
-      setMessage(err?.response?.data?.detail || "❌ Transfer failed.");
+      console.error("Transfer error:", err);
+
+      // Show the backend-provided detail or the whole response for easier debugging
+      const backendDetail =
+        err?.response?.data?.detail || err?.response?.data?.message;
+      const status = err?.response?.status;
+      if (backendDetail) {
+        setMessage(`${status ? status + " — " : ""}${backendDetail}`);
+      } else if (err?.message) {
+        setMessage(`${err.message}`);
+      } else {
+        setMessage("❌ Transfer failed.");
+      }
+
       setMessageType("error");
     }
   };
