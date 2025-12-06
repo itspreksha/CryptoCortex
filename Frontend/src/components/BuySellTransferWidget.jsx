@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "../styles/BuySellTransferWidget.module.css";
 
-const API_URL = "https://cryptocortex-1.onrender.com/cryptos";
+const API_URL = "https://cryptocortex-1.onrender.com";
 
 export const BuySellTransferWidget = ({ symbol, theme = "dark" }) => {
   const [orderType, setOrderType] = useState("LIMIT");

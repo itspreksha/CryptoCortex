@@ -66,17 +66,14 @@ How can I help you today?`,
     }
 
     try {
-      const res = await fetch(
-        "https://cryptocortex-1.onrender.com/cryptos/qa",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ question: input }),
-        }
-      );
+      const res = await fetch("https://cryptocortex-1.onrender.com/qa", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ question: input }),
+      });
 
       if (res.status === 401) {
         setMessages([

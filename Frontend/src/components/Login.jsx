@@ -16,7 +16,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "https://cryptocortex-1.onrender.com/cryptos/login",
+        "https://cryptocortex-1.onrender.com/login",
         { username, password }
       );
       const { access_token, refresh_token, token_type } = res.data;

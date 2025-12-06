@@ -44,7 +44,7 @@ const Portfolio = () => {
     const fetchPortfolio = async () => {
       try {
         const response = await axios.get(
-          `https://cryptocortex-1.onrender.com/cryptos/portfolio/${userId}`,
+          `https://cryptocortex-1.onrender.com/portfolio/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

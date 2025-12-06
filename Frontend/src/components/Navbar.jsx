@@ -42,7 +42,7 @@ const Navbar = () => {
     const token = localStorage.getItem("access_token");
     try {
       if (token && !isTokenExpired(token)) {
-        await fetch(`https://cryptocortex-1.onrender.com/cryptos/logout`, {
+        await fetch(`https://cryptocortex-1.onrender.com/logout`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

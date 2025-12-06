@@ -13,7 +13,7 @@ const Register = () => {
   const handleRegister = async () => {
     try {
       const response = await axios.post(
-        "https://cryptocortex-1.onrender.com/cryptos/register",
+        "https://cryptocortex-1.onrender.com/register",
         {
           username,
           password,
