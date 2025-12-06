@@ -237,14 +237,24 @@ const BuySellTransferPage = () => {
     } catch (err) {
       console.error("Transfer error:", err);
 
-      // Show the backend-provided detail or the whole response for easier debugging
+      // Axios "Network Error" occurs when no response was received.
+      const url = err?.config?.url;
+      const method = err?.config?.method?.toUpperCase();
+      const status = err?.response?.status;
       const backendDetail =
         err?.response?.data?.detail || err?.response?.data?.message;
-      const status = err?.response?.status;
-      if (backendDetail) {
+
+      if (!err?.response) {
+        // No response — likely network/CORS/server down
+        setMessage(
+          `Network error: no response from server. ${err.message || ""}${
+            url ? ` Endpoint: ${method || "POST"} ${url}` : ""
+          }`
+        );
+      } else if (backendDetail) {
         setMessage(`${status ? status + " — " : ""}${backendDetail}`);
       } else if (err?.message) {
-        setMessage(`${err.message}`);
+        setMessage(`${status ? status + " — " : ""}${err.message}`);
       } else {
         setMessage("❌ Transfer failed.");
       }
